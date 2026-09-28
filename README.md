@@ -77,7 +77,7 @@ docs/apresentacao.pdf      (a preparar)
 - Projeto Supabase: https://supabase.com/dashboard/project/zrovqrglnouisspmnzot
 - GitHub Pages: preencher após ativar
 
-**Atenção à nomenclatura:** o enunciado pede que a organização se chame `SN-2026-GRUPO-05-NASA`. A organização do link atual está como `API-NASA-CCS`; ajustem o nome da organização conforme o enunciado e atualizem estes links e a planilha de reserva.
+**Nomenclatura da organização:** o nome exibido no GitHub já está como `SN-2026-GRUPO-05-NASA`. O identificador usado no endereço da organização e do repositório continua `API-NASA-CCS`, então os links acima permanecem válidos.
 
 ## Documentação da entrega
 
