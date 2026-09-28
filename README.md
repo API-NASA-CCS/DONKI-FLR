@@ -74,7 +74,7 @@ docs/apresentacao.pdf      (a preparar)
 
 - Organização GitHub: https://github.com/API-NASA-CCS
 - Repositório: https://github.com/API-NASA-CCS/DONKI-FLR
-- Projeto Supabase: preencher
+- Projeto Supabase: https://supabase.com/dashboard/project/zrovqrglnouisspmnzot
 - GitHub Pages: preencher após ativar
 
 **Atenção à nomenclatura:** o enunciado pede que a organização se chame `SN-2026-GRUPO-05-NASA`. A organização do link atual está como `API-NASA-CCS`; ajustem o nome da organização conforme o enunciado e atualizem estes links e a planilha de reserva.
