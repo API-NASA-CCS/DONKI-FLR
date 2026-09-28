@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>Erupções solares | DONKI NASA</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07111f; --panel:#101d2d; --line:#263b51; --text:#eff6ff; --muted:#9cb0c7; --accent:#ffbd69; --cyan:#6ed6e7; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:radial-gradient(ellipse at 78% 0%,#182c48 0,transparent 38%),var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { width:min(1120px,calc(100% - 32px)); margin:0 auto; padding:48px 0 72px; }
+    .eyebrow { color:var(--cyan); text-transform:uppercase; letter-spacing:.15em; font-size:.75rem; font-weight:700; }
+    h1 { margin:.4rem 0; font-size:clamp(2rem,5vw,3.6rem); line-height:1.08; }
+    .intro,.muted { color:var(--muted); }
+    .intro { max-width:650px; margin:0 0 28px; }
+    .toolbar,.stats,.panel { border:1px solid var(--line); background:rgba(16,29,45,.92); border-radius:16px; }
+    .toolbar { display:flex; gap:12px; flex-wrap:wrap; padding:16px; margin:24px 0 16px; }
+    label { display:grid; gap:6px; color:var(--muted); font-size:.8rem; }
+    input,select { min-height:42px; min-width:190px; padding:8px 12px; color:var(--text); background:#091522; border:1px solid var(--line); border-radius:9px; font:inherit; }
+    .stats { display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; padding:14px 18px; margin-bottom:16px; }
+    .stats strong { display:block; color:var(--accent); font-size:1.1rem; }
+    .stats span { color:var(--muted); font-size:.8rem; }
+    .panel { overflow:hidden; }
+    .panel-head { padding:18px 20px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .panel-head h2 { margin:0; font-size:1.05rem; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:760px; }
+    th,td { text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--muted); font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; }
+    td { font-size:.9rem; }
+    tr:last-child td { border-bottom:0; }
+    .badge { display:inline-flex; border:1px solid #8b5d2d; color:var(--accent); background:#392919; border-radius:99px; padding:2px 9px; font-weight:700; white-space:nowrap; }
+    a { color:var(--cyan); }
+    .empty { padding:32px 18px; color:var(--muted); text-align:center; }
+    footer { margin-top:18px; color:var(--muted); font-size:.8rem; }
+    @media(max-width:600px) { main { padding-top:32px; } .toolbar>* { flex:1 1 100%; } input,select { width:100%; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Clima espacial · NASA DONKI</div>
+  <h1>Erupções solares</h1>
+  <p class="intro">Acompanhe eventos solares catalogados pela DONKI, com horários, classe de intensidade e região de origem quando disponíveis.</p>
+  <section class="toolbar" aria-label="Filtros dos eventos">
+    <label>Classe da erupção
+      <select id="class-filter"><option value="">Todas as classes</option><option value="X">Classe X</option><option value="M">Classe M</option><option value="C">Classe C</option><option value="B">Classe B</option><option value="A">Classe A</option></select>
+    </label>
+    <label>Buscar região ou identificador
+      <input id="search-filter" type="search" placeholder="Ex.: 2026-... ou S12E34">
+    </label>
+  </section>
+  <section class="stats" aria-live="polite">
+    <div><strong id="result-count">—</strong><span>eventos exibidos</span></div>
+    <div><strong id="last-update">Carregando…</strong><span>última execução do pipeline</span></div>
+  </section>
+  <section class="panel">
+    <div class="panel-head"><h2>Eventos recentes</h2><span class="muted" id="load-status">Conectando ao Supabase…</span></div>
+    <div id="event-list" class="empty">Carregando eventos…</div>
+  </section>
+  <footer>Fonte dos dados: NASA DONKI · Atualização automática diária</footer>
+</main>
+<script>
+  // Preencher com Project URL e Publishable/anon key do Supabase.
+  // Nunca colocar a secret/service_role key do Supabase neste arquivo.
+  const SUPABASE_URL = "COLE_A_PROJECT_URL_AQUI";
+  const SUPABASE_ANON_KEY = "COLE_A_CHAVE_PUBLICA_AQUI";
+  const eventList = document.getElementById("event-list");
+  const classFilter = document.getElementById("class-filter");
+  const searchFilter = document.getElementById("search-filter");
+  let events = [];
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[char]));
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "—" : new Intl.DateTimeFormat("pt-BR", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(date) + " UTC";
+  }
+
+  function safeExternalUrl(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" ? url.href : "";
+    } catch { return ""; }
+  }
+
+  function renderEvents() {
+    const selectedClass = classFilter.value;
+    const search = searchFilter.value.trim().toLowerCase();
+    const visible = events.filter((event) => {
+      const flareClass = String(event.class_type || "").trim().toUpperCase();
+      const classMatch = !selectedClass || flareClass.startsWith(selectedClass);
+      const text = `${event.flr_id || ""} ${event.source_location || ""} ${event.active_region_num || ""}`.toLowerCase();
+      return classMatch && (!search || text.includes(search));
+    });
+    document.getElementById("result-count").textContent = String(visible.length);
+    if (!visible.length) {
+      eventList.className = "empty";
+      eventList.textContent = events.length ? "Nenhum evento corresponde aos filtros." : "Nenhum evento foi encontrado.";
+      return;
+    }
+    eventList.className = "table-wrap";
+    eventList.innerHTML = `<table><thead><tr><th>Classe</th><th>Início (UTC)</th><th>Pico (UTC)</th><th>Localização</th><th>Região ativa</th><th>Evento</th></tr></thead><tbody>${visible.map((event) => {
+      const url = safeExternalUrl(event.link);
+      const id = escapeHtml(event.flr_id || "—");
+      return `<tr><td><span class="badge">${escapeHtml(event.class_type || "Sem classe")}</span></td><td>${escapeHtml(formatDate(event.begin_time))}</td><td>${escapeHtml(formatDate(event.peak_time))}</td><td>${escapeHtml(event.source_location || "—")}</td><td>${escapeHtml(event.active_region_num ?? "—")}</td><td>${url ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${id}</a>` : id}</td></tr>`;
+    }).join("")}</tbody></table>`;
+  }
+
+  async function supabaseGet(table, query) {
+    const url = `${SUPABASE_URL}/rest/v1/${table}?${query}`;
+    const response = await fetch(url, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } });
+    if (!response.ok) throw new Error(`Supabase respondeu HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async function loadDashboard() {
+    if (SUPABASE_URL.includes("COLE_") || SUPABASE_ANON_KEY.includes("COLE_")) {
+      document.getElementById("load-status").textContent = "Falta configurar o Supabase no index.html.";
+      eventList.textContent = "Adicione a Project URL e a chave pública do projeto Supabase para carregar os dados.";
+      return;
+    }
+    try {
+      const [flareRows, runs] = await Promise.all([
+        supabaseGet("flares", "select=flr_id,begin_time,peak_time,class_type,source_location,active_region_num,link&order=begin_time.desc&limit=500"),
+        supabaseGet("execucoes", "select=finalizado_em,status&order=finalizado_em.desc&limit=1")
+      ]);
+      events = flareRows;
+      renderEvents();
+      document.getElementById("load-status").textContent = `${events.length} registros carregados`;
+      document.getElementById("last-update").textContent = runs[0] ? `${formatDate(runs[0].finalizado_em)} · ${runs[0].status}` : "Ainda sem execução";
+    } catch (error) {
+      document.getElementById("load-status").textContent = "Não foi possível carregar os dados.";
+      eventList.textContent = error.message;
+    }
+  }
+
+  classFilter.addEventListener("change", renderEvents);
+  searchFilter.addEventListener("input", renderEvents);
+  loadDashboard();
+</script>
+</body>
+</html>
