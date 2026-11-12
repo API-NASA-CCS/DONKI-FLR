@@ -8,7 +8,7 @@ A IA ajudou a transformar o enunciado em tarefas menores e a preparar a estrutur
 
 ## Onde a IA errou ou precisou de correção
 
-Durante a configuração do GitHub, a IA seguiu inicialmente um fluxo ligado à conta errada. Saulo esclareceu que a conta correta era **Sauloopf** e fez o login manualmente. A conexão exigiu várias tentativas e gerou frustração. O grupo também precisou distinguir um commit no GitHub das configurações e dados armazenados no Supabase. A publicação do Pages confirmou que o site estava hospedado, mas isso não comprovava que o pipeline havia coletado e gravado dados. As execuções agendadas mais recentes falharam por ausência dos secrets, e o projeto Supabase estava inativo quando foi verificado.
+Durante a configuração do GitHub, a IA seguiu inicialmente um fluxo ligado à conta errada. Saulo esclareceu que a conta correta era **Sauloopf** e fez o login manualmente. A conexão exigiu várias tentativas e gerou frustração. O grupo também precisou distinguir um commit no GitHub das configurações e dados armazenados no Supabase. A publicação do Pages confirmou que o site estava hospedado, mas isso não comprovava que o pipeline havia coletado e gravado dados. As execuções agendadas falharam por ausência dos secrets. O projeto Supabase estava inativo quando foi verificado e foi reativado durante a finalização; ainda não há dados coletados.
 
 ## O que o grupo aprendeu
 

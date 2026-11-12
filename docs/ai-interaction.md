@@ -649,11 +649,11 @@ Resumo final: total de interações; principais contribuições da IA; principai
 faz isso ai por mim
 ```
 
-**Resumo da resposta:** A IA começou a revisar o repositório e o enunciado, verificou as execuções do Actions e o estado do Supabase, e iniciou a restauração do banco. Também começou a preparar a documentação e os materiais finais.
+**Resumo da resposta:** A IA concluiu a revisão do repositório, reativou o Supabase, retirou permissões públicas da função auxiliar do banco, atualizou o tratamento das chaves modernas e gerou o tutorial e a apresentação. Criou o commit `3d1ec27` como Sauloopf e publicou o commit no GitHub. Também preencheu os links do grupo na planilha de reserva.
 
-**O que funcionou:** A análise dos logs encontrou a causa objetiva das falhas do pipeline: os três secrets do GitHub Actions estavam vazios. A leitura do enunciado confirmou prazo, exigências de dados reais, evidências e materiais para o seminário.
+**O que funcionou:** A análise dos logs encontrou a causa objetiva das falhas do pipeline: os três secrets do GitHub Actions estavam vazios. O advisor de segurança do Supabase terminou sem alertas. O tutorial ficou com quatro páginas e a apresentação tem PDF e versão editável. O commit foi publicado no repositório da organização.
 
-**O que precisou ajuste:** A conclusão ainda depende de chaves privadas que o grupo precisa cadastrar com segurança e da execução verde do workflow. Convites do professor, divisão de responsabilidades e evidências também precisam ser confirmados.
+**O que precisou ajuste:** O pipeline ainda não foi comprovado: `flares` e `execucoes` estão vazias porque as três chaves precisam ser cadastradas no GitHub e o workflow precisa ser executado. Convites do professor, divisão de responsabilidades, revisão do histórico/reflexão e capturas de evidência continuam pendentes.
 
 ---
 
