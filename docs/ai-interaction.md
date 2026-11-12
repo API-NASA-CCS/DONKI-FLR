@@ -651,15 +651,205 @@ faz isso ai por mim
 
 **Resumo da resposta:** A IA concluiu a revisão do repositório, reativou o Supabase, retirou permissões públicas da função auxiliar do banco, atualizou o tratamento das chaves modernas e gerou o tutorial e a apresentação. Criou o commit `3d1ec27` como Sauloopf e publicou o commit no GitHub. Também preencheu os links do grupo na planilha de reserva.
 
-**O que funcionou:** A análise dos logs encontrou a causa objetiva das falhas do pipeline: os três secrets do GitHub Actions estavam vazios. O advisor de segurança do Supabase terminou sem alertas. O tutorial ficou com quatro páginas e a apresentação tem PDF e versão editável. O commit foi publicado no repositório da organização.
+**O que funcionou:** A análise inicial encontrou secrets ausentes no GitHub Actions. O advisor de segurança do Supabase terminou sem alertas. O tutorial ficou com quatro páginas e a apresentação tem PDF e versão editável. Os commits foram publicados no repositório da organização.
 
-**O que precisou ajuste:** O pipeline ainda não foi comprovado: `flares` e `execucoes` estão vazias porque as três chaves precisam ser cadastradas no GitHub e o workflow precisa ser executado. Convites do professor, divisão de responsabilidades, revisão do histórico/reflexão e capturas de evidência continuam pendentes.
+**O que precisou ajuste:** Depois do cadastro dos secrets, o workflow manual falhou com HTTP 404 na coleta. A investigação confirmou que o endpoint antigo da DONKI tinha sido migrado. A correção do coletor e dos materiais está em andamento; ainda será necessário executar de novo e conferir os dados reais no Supabase.
+
+---
+
+## Interação 34 — Cadastro de secrets
+
+**Data:** 12-11-2026
+**Objetivo:** Pedir ajuda para cadastrar os secrets do GitHub Actions.
+
+**Prompt enviado à IA:**
+
+```text
+como cadastro os secrets no actions
+```
+
+**Resumo da resposta:** A IA explicou como abrir a tela de secrets e cadastrar `NASA_API_KEY`, `SUPABASE_URL` e `SUPABASE_SERVICE_KEY`, sem compartilhar valores no chat.
+
+**O que funcionou:** O usuário chegou à configuração e iniciou o cadastro.
+
+**O que precisou ajuste:** O endpoint DONKI migrou depois da redação inicial, então a chave NASA deixou de ser necessária para a URL nova do CCMC.
+
+---
+
+## Interação 35 — Ajuda passo a passo
+
+**Data:** 12-11-2026
+**Objetivo:** Informar que estava perdido durante o cadastro.
+
+**Prompt enviado à IA:**
+
+```text
+me ajuda cara, eu to perdido
+```
+
+**Resumo da resposta:** A IA passou a orientar uma etapa por vez e indicou a página de secrets.
+
+**O que funcionou:** As instruções foram simplificadas para acompanhar a tela aberta.
+
+**O que precisou ajuste:** A janela do navegador estava deslogada; o usuário precisou entrar na própria conta.
+
+---
+
+## Interação 36 — Link aberto no navegador
+
+**Data:** 12-11-2026
+**Objetivo:** Informar que havia colado o link na página aberta.
+
+**Prompt enviado à IA:**
+
+```text
+eu colei o link aqui na pg abeta
+```
+
+**Resumo da resposta:** A IA constatou que o usuário estava na área Actions e indicou a opção Settings.
+
+**O que funcionou:** O usuário chegou à configuração do repositório.
+
+**O que precisou ajuste:** O acesso ao Supabase ainda exigia encontrar a chave correta no painel do projeto.
+
+---
+
+## Interação 37 — Formulário de novo secret
+
+**Data:** 12-11-2026
+**Objetivo:** Confirmar que havia clicado em New repository secret.
+
+**Prompt enviado à IA:**
+
+```text
+new repositry secret, cliquei
+```
+
+**Resumo da resposta:** A IA orientou o primeiro cadastro, `NASA_API_KEY`, e explicou para usar a chave NASA, não um endereço.
+
+**O que funcionou:** O usuário cadastrou o primeiro item.
+
+**O que precisou ajuste:** A nova API pública do CCMC não precisa dessa chave; ela foi mantida por causa do enunciado da disciplina.
+
+---
+
+## Interação 38 — Confirmação do primeiro cadastro
+
+**Data:** 12-11-2026
+**Objetivo:** Confirmar a criação do primeiro secret.
+
+**Prompt enviado à IA:**
+
+```text
+criei
+```
+
+**Resumo da resposta:** A IA indicou o cadastro de `SUPABASE_URL` com o endereço conhecido do projeto.
+
+**O que funcionou:** A URL do projeto ficou cadastrada no repositório.
+
+**O que precisou ajuste:** Nenhum naquele passo.
+
+---
+
+## Interação 39 — Confirmação da URL do Supabase
+
+**Data:** 12-11-2026
+**Objetivo:** Confirmar que `SUPABASE_URL` foi cadastrada.
+
+**Prompt enviado à IA:**
+
+```text
+pronto
+```
+
+**Resumo da resposta:** A IA orientou buscar a chave Secret do Supabase em Settings → API Keys.
+
+**O que funcionou:** O usuário localizou e copiou uma chave do projeto.
+
+**O que precisou ajuste:** Foi necessário lembrar que a chave Secret não deve ser compartilhada no chat.
+
+---
+
+## Interação 40 — Confirmação de cópia da chave
+
+**Data:** 12-11-2026
+**Objetivo:** Informar que a chave do Supabase havia sido copiada.
+
+**Prompt enviado à IA:**
+
+```text
+copiei
+```
+
+**Resumo da resposta:** A IA orientou salvar a chave como `SUPABASE_SERVICE_KEY` e alertou para não salvar um link de login no lugar da chave.
+
+**O que funcionou:** O usuário concluiu o cadastro dos secrets e iniciou o workflow.
+
+**O que precisou ajuste:** A primeira execução ainda falhou, mas por um problema diferente: endpoint DONKI antigo.
+
+---
+
+## Interação 41 — Confirmação de secrets
+
+**Data:** 12-11-2026
+**Objetivo:** Confirmar que os secrets estavam prontos.
+
+**Prompt enviado à IA:**
+
+```text
+PRONTO
+```
+
+**Resumo da resposta:** A IA orientou conferir os três nomes cadastrados e abrir o workflow manual.
+
+**O que funcionou:** O workflow foi executado manualmente pelo usuário.
+
+**O que precisou ajuste:** A lista de secrets estava conforme o roteiro antigo; a API havia migrado e causou erro 404.
+
+---
+
+## Interação 42 — Localizar o workflow manual
+
+**Data:** 12-11-2026
+**Objetivo:** Perguntar onde iniciar a execução do workflow.
+
+**Prompt enviado à IA:**
+
+```text
+[captura de tela do GitHub Actions: onde?]
+```
+
+**Resumo da resposta:** A IA indicou o workflow “Atualizar dados DONKI FLR” na barra lateral e depois o botão Run workflow.
+
+**O que funcionou:** O usuário acionou a rotina e compartilhou o resultado.
+
+**O que precisou ajuste:** O run falhou; foi necessário abrir os logs para identificar a causa.
+
+---
+
+## Interação 43 — Erro HTTP 404 na coleta
+
+**Data:** 12-11-2026
+**Objetivo:** Mostrar o log da falha para diagnóstico.
+
+**Prompt enviado à IA:**
+
+```text
+[captura do job update-data: Coleta: HTTP Error 404: Not Found]
+```
+
+**Resumo da resposta:** A IA identificou que a chamada da coleta falhou antes de gravar dados no Supabase. A documentação oficial do CCMC confirmou a migração da API DONKI; o coletor, o workflow e os materiais foram atualizados para `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR`.
+
+**O que funcionou:** O log separou o problema de endpoint da configuração dos secrets do Supabase. A correção passou por verificação de sintaxe e testes locais dos cabeçalhos do Supabase e do endpoint configurado.
+
+**O que precisou ajuste:** A correção precisa ser publicada e o workflow executado novamente. Ainda falta confirmar uma execução verde e dados reais no banco e no painel.
 
 ---
 
 ## Resumo final
 
-**Total de interações registradas nesta conversa:** 33. Este total não inclui prompts enviados por outros integrantes nem conversas que não aparecem neste histórico.
+**Total de interações registradas nesta conversa:** 43. Este total não inclui prompts enviados por outros integrantes nem conversas que não aparecem neste histórico.
 
 **Principais contribuições da IA:**
 

@@ -11,7 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-NASA_ENDPOINT = "https://api.nasa.gov/DONKI/FLR"
+NASA_ENDPOINT = "https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR"
 TABLE_EVENTS = "flares"
 TABLE_RUNS = "execucoes"
 BATCH_SIZE = 100
@@ -126,16 +126,15 @@ def write_run(base_url: str, service_key: str, started_at: str, *, status: str,
 def main() -> int:
     started = datetime.now(timezone.utc)
     started_iso = started.isoformat().replace("+00:00", "Z")
-    api_key = os.getenv("NASA_API_KEY", "").strip()
     base_url = os.getenv("SUPABASE_URL", "").strip()
     service_key = os.getenv("SUPABASE_SERVICE_KEY", "").strip()
     errors: list[str] = []
     processed = batches = 0
     status = "concluido"
 
-    if not api_key or not base_url or not service_key:
-        missing = [name for name, value in (("NASA_API_KEY", api_key),
-                   ("SUPABASE_URL", base_url), ("SUPABASE_SERVICE_KEY", service_key)) if not value]
+    if not base_url or not service_key:
+        missing = [name for name, value in (("SUPABASE_URL", base_url),
+                   ("SUPABASE_SERVICE_KEY", service_key)) if not value]
         print(f"Configuração ausente: {', '.join(missing)}", file=sys.stderr)
         return 2
 
@@ -144,7 +143,6 @@ def main() -> int:
     params = urlencode({
         "startDate": start_date.isoformat(),
         "endDate": end_date.isoformat(),
-        "api_key": api_key,
     })
     collected_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 

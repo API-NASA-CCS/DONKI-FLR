@@ -8,7 +8,7 @@ Este guia descreve como montar o pipeline de erupções solares deste repositór
 NASA DONKI/FLR → GitHub Actions → Supabase (PostgreSQL + REST) → GitHub Pages
 ```
 
-- **API:** `https://api.nasa.gov/DONKI/FLR`
+- **API atual:** `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR`
 - **Coletor:** `scripts/fetch_nasa.py`
 - **Modelo do banco:** `sql/setup.sql`
 - **Agendamento e execução manual:** `.github/workflows/update-data.yml`
@@ -27,11 +27,12 @@ O projeto Supabase deve usar a região South America (São Paulo). Conforme o en
 
 - Uma conta GitHub com acesso de escrita à organização e ao repositório.
 - Um projeto Supabase na região São Paulo.
-- Uma chave gratuita da NASA criada em https://api.nasa.gov/.
 - Python 3.11 ou superior para executar o coletor localmente.
 - A URL do projeto e uma chave secreta de servidor do Supabase.
 
 O grupo tem três integrantes: Cristofer, Saulo e Cauã. Distribua entre eles as tarefas de pipeline, banco, painel e documentação; registre os responsáveis no README. O histórico desta conversa não confirma essa divisão.
+
+**Migração da API:** em 30-09-2026, o CCMC moveu a DONKI para `https://ccmc.gsfc.nasa.gov/DONKI-API/get/`. O antigo endereço `api.nasa.gov/DONKI/FLR` agora pode responder HTTP 404. A nova API pública do CCMC não exige chave NASA; `NASA_API_KEY` pode continuar cadastrada caso o enunciado a peça, mas o coletor não a usa.
 
 ## 4. Criar as tabelas e políticas
 
@@ -58,18 +59,16 @@ No repositório, abra **Settings → Secrets and variables → Actions → New r
 
 | Nome | Valor |
 |---|---|
-| `NASA_API_KEY` | Chave pessoal criada em api.nasa.gov |
 | `SUPABASE_URL` | URL do projeto, por exemplo `https://<project-ref>.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | Chave Secret de servidor (`sb_secret_...`) ou chave legada `service_role` |
 
-Digite as chaves diretamente na tela protegida do GitHub. Não as envie em chat, não as coloque no arquivo `.env` versionado e não tire capturas que mostrem os valores. Uma chave Secret moderna não é um JWT e o coletor a envia somente no cabeçalho `apikey`; para a chave legada `service_role`, ele também envia `Authorization: Bearer`. A chave pública do painel é diferente da chave secreta usada pelo coletor.
+Digite as chaves diretamente na tela protegida do GitHub. Não as envie em chat, não as coloque no arquivo `.env` versionado e não tire capturas que mostrem os valores. Uma chave Secret moderna não é um JWT e o coletor a envia somente no cabeçalho `apikey`; para a chave legada `service_role`, ele também envia `Authorization: Bearer`. A chave pública do painel é diferente da chave secreta usada pelo coletor. Se o enunciado pedir `NASA_API_KEY`, mantenha-a cadastrada como exigência da disciplina; o endpoint CCMC atualizado não a consome.
 
 ## 7. Testar o coletor localmente
 
 No PowerShell, abra a raiz do repositório. Defina as variáveis apenas na sessão local e execute o script:
 
 ```powershell
-$env:NASA_API_KEY = "sua-chave-da-nasa"
 $env:SUPABASE_URL = "https://seu-projeto.supabase.co"
 $env:SUPABASE_SERVICE_KEY = "sua-chave-secreta-do-supabase"
 python scripts/fetch_nasa.py
@@ -81,7 +80,7 @@ Não salve os valores no histórico do Git. Um encerramento com código `0` indi
 
 O workflow `.github/workflows/update-data.yml` roda todos os dias às 09:17 UTC e também pode ser iniciado manualmente. Ele limita as permissões a `contents: read`, impede execuções concorrentes e encerra após dez minutos.
 
-Depois de criar os três secrets:
+Depois de criar os dois secrets usados pelo coletor (`SUPABASE_URL` e `SUPABASE_SERVICE_KEY`):
 
 1. Abra a aba **Actions** no repositório.
 2. Selecione **Atualizar dados DONKI FLR**.
@@ -128,7 +127,8 @@ O Classroom pede um único PDF de entrega com os links, a captura verde do workf
 
 | Sintoma | Verificação |
 |---|---|
-| Actions informa `Configuração ausente` | Confira se os três secrets existem e se os nomes estão exatamente iguais aos do workflow. |
+| Actions informa `Configuração ausente` | Confira se `SUPABASE_URL` e `SUPABASE_SERVICE_KEY` existem com os nomes exatos. |
+| Actions mostra HTTP 404 na coleta | Confira se o coletor usa o endpoint novo `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR`; a API mudou em 30-09-2026. |
 | Actions falha ao conectar ao Supabase | Confira URL, chave secreta e status ativo do projeto Supabase. |
 | Tabelas não aparecem no painel | Confirme a execução de `sql/setup.sql`, RLS, políticas de leitura e grants. |
 | A tabela do painel fica vazia | Verifique a tabela `flares`, a última linha de `execucoes` e o console/rede do navegador. |
@@ -142,7 +142,8 @@ Organize a apresentação em até 20 minutos: API e motivação (6 min), arquite
 ## Referências
 
 - Documentação e chave da NASA: https://api.nasa.gov/.
-- Endpoint DONKI/FLR: https://api.nasa.gov/DONKI/FLR.
+- Endpoint DONKI/FLR atual: https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR.
+- Aviso oficial sobre a migração: https://ccmc.gsfc.nasa.gov/news/major-updates/.
 - Repositório do projeto: https://github.com/API-NASA-CCS/DONKI-FLR.
 - Painel: https://api-nasa-ccs.github.io/DONKI-FLR/.
 - Supabase: https://supabase.com/dashboard/project/zrovqrglnouisspmnzot.

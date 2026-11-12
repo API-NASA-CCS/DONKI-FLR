@@ -14,7 +14,7 @@ NASA DONKI/FLR → GitHub Actions → Supabase (PostgreSQL + REST) → GitHub Pa
 
 A DONKI registra eventos de clima espacial. Este projeto acompanha erupções solares e apresenta classe, horários de início/pico/fim, localização e região ativa quando esses dados estão disponíveis. O coletor consulta a janela dos últimos 30 dias e usa `flrID` como identificador único para que execuções repetidas atualizem registros sem criar duplicatas.
 
-Endpoint definido no enunciado: `https://api.nasa.gov/DONKI/FLR`.
+Endpoint atual DONKI FLR: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR`. O serviço NASA CCMC migrou os endpoints em 30-09-2026; o caminho antigo retorna 404.
 
 ## Responsabilidades do grupo
 
@@ -33,17 +33,16 @@ Integrantes: Cristofer, Saulo e Cauã.
 
 1. Crie o projeto Supabase `DONKI-FLR-DB` na região South America (São Paulo).
 2. No SQL Editor do Supabase, execute [`sql/setup.sql`](sql/setup.sql).
-3. Gere uma chave gratuita em [api.nasa.gov](https://api.nasa.gov/) e defina as variáveis de ambiente abaixo no ambiente local.
+3. Defina as variáveis de ambiente do Supabase abaixo no ambiente local. O endpoint público DONKI do CCMC não exige chave NASA.
 4. Instale Python 3.11 ou superior e execute `python scripts/fetch_nasa.py`.
 
 ```powershell
-$env:NASA_API_KEY = "sua-chave-nasa"
 $env:SUPABASE_URL = "https://seu-projeto.supabase.co"
 $env:SUPABASE_SERVICE_KEY = "sua-chave-secreta-do-supabase"
 python scripts/fetch_nasa.py
 ```
 
-No GitHub, cadastre `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` e `NASA_API_KEY` em **Settings → Secrets and variables → Actions**. Para `SUPABASE_SERVICE_KEY`, use uma chave Secret (`sb_secret_...`) ou a chave legada `service_role`. Nunca coloque a chave secreta do Supabase no código ou no painel. O painel usa somente `SUPABASE_URL` e a chave pública publishable (`sb_publishable_...`) ou anon legada, que pode ser incluída no `index.html`.
+No GitHub Actions, o pipeline usa `SUPABASE_URL` e `SUPABASE_SERVICE_KEY`. Use uma chave Secret (`sb_secret_...`) ou a chave legada `service_role`. O enunciado pode pedir `NASA_API_KEY`; ela pode permanecer cadastrada, mas o novo endpoint público do CCMC não a utiliza. Nunca coloque a chave secreta do Supabase no código ou no painel. O painel usa somente `SUPABASE_URL` e a chave pública publishable (`sb_publishable_...`) ou anon legada, que pode ser incluída no `index.html`.
 
 ## Executar o pipeline
 
@@ -82,4 +81,4 @@ docs/apresentacao.pptx     (versão editável)
 
 ## Documentação da entrega
 
-O [tutorial de replicação](docs/tutorial.md) explica como configurar e validar o projeto. O PDF do tutorial tem 4 páginas. O grupo deve revisar `docs/ai-interaction.md` e `docs/reflexao.md`, confirmar as responsabilidades na tabela acima e guardar evidências do workflow verde, dos dados reais no Supabase e do painel para a entrega no Classroom.
+O [tutorial de replicação](docs/tutorial.md) explica como configurar e validar o projeto. O PDF do tutorial tem 3 páginas. O grupo deve revisar `docs/ai-interaction.md` e `docs/reflexao.md`, confirmar as responsabilidades na tabela acima e guardar evidências do workflow verde, dos dados reais no Supabase e do painel para a entrega no Classroom.

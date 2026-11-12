@@ -4,7 +4,7 @@
 
 ## Onde a IA ajudou
 
-A IA ajudou a transformar o enunciado em tarefas menores e a preparar a estrutura do projeto: coletor em Python, workflow do GitHub Actions, tabelas do Supabase e painel publicado no GitHub Pages. Também explicou opções de configuração, organizou uma lista de pendências até o seminário e preparou um rascunho do histórico de prompts. A análise do log do Actions identificou que a execução falhava porque `NASA_API_KEY`, `SUPABASE_URL` e `SUPABASE_SERVICE_KEY` estavam vazios.
+A IA ajudou a transformar o enunciado em tarefas menores e a preparar a estrutura do projeto: coletor em Python, workflow do GitHub Actions, tabelas do Supabase e painel publicado no GitHub Pages. Também explicou opções de configuração, organizou uma lista de pendências até o seminário e preparou um rascunho do histórico de prompts. Os primeiros logs mostraram secrets ausentes; depois que foram cadastrados, outra execução revelou HTTP 404 porque o endpoint DONKI antigo tinha sido migrado.
 
 ## Onde a IA errou ou precisou de correção
 
@@ -12,7 +12,7 @@ Durante a configuração do GitHub, a IA seguiu inicialmente um fluxo ligado à 
 
 ## O que o grupo aprendeu
 
-O grupo precisa validar cada parte do fluxo com evidência própria. Um workflow só está comprovado quando o Actions termina em verde e a tabela do Supabase recebe registros. O painel usa a chave pública de leitura; o coletor usa a chave secreta `service_role`, que deve ficar somente nos secrets do GitHub. Chaves privadas não devem aparecer em mensagens, código, commits ou capturas de tela. Também aprendemos a conferir os logs do Actions para localizar a causa de uma falha, em vez de assumir que a publicação do site representa o sistema inteiro.
+O grupo precisa validar cada parte do fluxo com evidência própria. Um workflow só está comprovado quando o Actions termina em verde e a tabela do Supabase recebe registros. O painel usa a chave pública de leitura; o coletor usa a chave secreta `service_role`, que deve ficar somente nos secrets do GitHub. Chaves privadas não devem aparecer em mensagens, código, commits ou capturas de tela. Também aprendemos a conferir os logs do Actions e os avisos oficiais do provedor: a DONKI migrou os endpoints em setembro de 2026 e a URL antiga passou a retornar 404. O código agora aponta para o endereço novo; ainda falta uma execução bem-sucedida com dados reais para validar o fluxo completo.
 
 ## Revisão do grupo antes da entrega
 
