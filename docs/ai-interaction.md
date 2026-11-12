@@ -843,28 +843,47 @@ PRONTO
 
 **O que funcionou:** O log separou o problema de endpoint da configuração dos secrets do Supabase. A correção passou por verificação de sintaxe e testes locais dos cabeçalhos do Supabase e do endpoint configurado.
 
-**O que precisou ajuste:** A correção precisa ser publicada e o workflow executado novamente. Ainda falta confirmar uma execução verde e dados reais no banco e no painel.
+**O que precisou ajuste:** Depois da publicação, o workflow foi executado com sucesso. A última execução gravou 13 eventos em um lote, sem erros, e os dados apareceram no painel.
+
+---
+
+## Interação 44 — Refazer a apresentação
+
+**Data:** 12-11-2026
+**Objetivo:** Pedir uma apresentação melhor para o seminário.
+
+**Prompt enviado à IA:**
+
+```text
+ta ruim dms, faz melhor
+```
+
+**Resumo da resposta:** A IA reorganizou a narrativa em 11 slides, refez o visual, acrescentou notas de fala e incluiu uma amostra real do Supabase e os resultados confirmados: 13 eventos, 1 lote e 0 erros.
+
+**O que funcionou:** A nova sequência cobre fonte de dados, arquitetura, coleta, painel, migração que causou o HTTP 404, resultado, segurança, uso de IA e demonstração. O arquivo PowerPoint permanece editável.
+
+**O que precisou ajuste:** O grupo ainda deve revisar as falas e combinar quem apresenta cada parte antes do seminário.
 
 ---
 
 ## Resumo final
 
-**Total de interações registradas nesta conversa:** 43. Este total não inclui prompts enviados por outros integrantes nem conversas que não aparecem neste histórico.
+**Total de interações registradas nesta conversa:** 44. Este total não inclui prompts enviados por outros integrantes nem conversas que não aparecem neste histórico.
 
 **Principais contribuições da IA:**
 
 * Ajudou a organizar o projeto escolar em etapas de código, banco, pipeline e publicação.
 * Apoiou a configuração do repositório GitHub, da integração Supabase e do GitHub Pages.
-* Ajudou a preparar a lista de trabalho pendente até o seminário e a documentar as interações.
+* Ajudou a preparar os materiais do seminário, incluindo uma apresentação revisada com dados reais da coleta.
 
 **Principais limitações encontradas:**
 
 * Houve confusão inicial sobre qual conta GitHub o usuário queria conectar, corrigida após ele indicar Sauloopf e fazer login.
 * O fluxo de conexão exigiu várias tentativas e causou frustração antes do login manual.
-* A publicação do Pages não significava que o pipeline já havia coletado e armazenado dados; ainda era preciso configurar secrets e executar a coleta.
+* A publicação do Pages não significava que o pipeline já havia coletado e armazenado dados; foi necessário configurar secrets, atualizar o endpoint migrado e executar a coleta.
 * O link fornecido para este registro abre a planilha geral de APIs e grupos, não uma planilha de histórico de IA.
 * As datas de muitas mensagens e possíveis interações de outros integrantes não podem ser recuperadas deste histórico.
 
 **Avaliação geral do uso da IA:**
 
-A IA ajudou a transformar o enunciado em etapas práticas e a levar o repositório até a publicação do painel. Também ajudou na integração do projeto com o Supabase e na organização das tarefas para a apresentação. Algumas orientações de autenticação precisaram de correção, especialmente para usar a conta GitHub certa. O grupo verificou a conta e concluiu o login manualmente. A IA também apontou que ainda era necessário testar a execução do pipeline e registrar dados no banco. Este histórico deve ser revisado pelo grupo para confirmar datas e incluir as conversas dos demais integrantes.
+A IA ajudou a transformar o enunciado em etapas práticas, integrar o coletor ao Supabase, analisar o HTTP 404 e revisar a apresentação. Algumas orientações de autenticação precisaram de correção, especialmente para usar a conta GitHub certa. O grupo conferiu os resultados nos logs e no banco: a última execução registrou 13 eventos em um lote, sem erros, e o painel exibiu os dados. Este histórico ainda deve ser revisado pelo grupo para confirmar datas e incluir conversas de outros integrantes.
