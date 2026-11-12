@@ -114,7 +114,13 @@
 
   async function supabaseGet(table, query) {
     const url = `${SUPABASE_URL}/rest/v1/${table}?${query}`;
-    const response = await fetch(url, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } });
+    const headers = { apikey: SUPABASE_ANON_KEY };
+    // Modern publishable keys are not JWTs. Legacy anon keys still need the
+    // Authorization bearer header to select the anon Postgres role.
+    if (!SUPABASE_ANON_KEY.startsWith("sb_publishable_")) {
+      headers.Authorization = `Bearer ${SUPABASE_ANON_KEY}`;
+    }
+    const response = await fetch(url, { headers });
     if (!response.ok) throw new Error(`Supabase respondeu HTTP ${response.status}`);
     return response.json();
   }

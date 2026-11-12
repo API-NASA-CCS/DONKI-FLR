@@ -43,7 +43,7 @@ $env:SUPABASE_SERVICE_KEY = "sua-chave-secreta-do-supabase"
 python scripts/fetch_nasa.py
 ```
 
-No GitHub, cadastre `SUPABASE_URL` e `SUPABASE_SERVICE_KEY` em **Settings → Secrets and variables → Actions**. Cadastre `NASA_API_KEY` como Secret. Nunca coloque a chave secreta do Supabase no código ou no painel. O painel usa somente `SUPABASE_URL` e a chave pública (publishable/anon), que podem ser incluídas no `index.html`.
+No GitHub, cadastre `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` e `NASA_API_KEY` em **Settings → Secrets and variables → Actions**. Para `SUPABASE_SERVICE_KEY`, use uma chave Secret (`sb_secret_...`) ou a chave legada `service_role`. Nunca coloque a chave secreta do Supabase no código ou no painel. O painel usa somente `SUPABASE_URL` e a chave pública publishable (`sb_publishable_...`) ou anon legada, que pode ser incluída no `index.html`.
 
 ## Executar o pipeline
 
@@ -66,8 +66,9 @@ sql/setup.sql
 .github/workflows/update-data.yml
 docs/ai-interaction.md
 docs/reflexao.md
-docs/tutorial.pdf          (a preparar)
-docs/apresentacao.pdf      (a preparar)
+docs/tutorial.pdf
+docs/apresentacao.pdf
+docs/apresentacao.pptx     (versão editável)
 ```
 
 ## Endereços do projeto
@@ -81,4 +82,4 @@ docs/apresentacao.pdf      (a preparar)
 
 ## Documentação da entrega
 
-O grupo deve completar `docs/ai-interaction.md` com os prompts e ajustes feitos com IA, `docs/reflexao.md` com a análise crítica, além de produzir o tutorial replicável (até 15 páginas), os slides e os prints de evidência para envio no Classroom.
+O [tutorial de replicação](docs/tutorial.md) explica como configurar e validar o projeto. O PDF do tutorial tem 4 páginas. O grupo deve revisar `docs/ai-interaction.md` e `docs/reflexao.md`, confirmar as responsabilidades na tabela acima e guardar evidências do workflow verde, dos dados reais no Supabase e do painel para a entrega no Classroom.

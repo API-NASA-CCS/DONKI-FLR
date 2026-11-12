@@ -49,3 +49,13 @@ grant select on public.execucoes to anon, authenticated;
 grant all on public.flares to service_role;
 grant all on public.execucoes to service_role;
 grant usage, select on all sequences in schema public to service_role;
+
+-- Keep Supabase's automatic-RLS event-trigger helper unavailable to API roles.
+-- The helper is platform-provided and may not exist in every project.
+do $$
+begin
+    if to_regprocedure('public.rls_auto_enable()') is not null then
+        execute 'revoke execute on function public.rls_auto_enable() from public, anon, authenticated';
+    end if;
+end;
+$$;

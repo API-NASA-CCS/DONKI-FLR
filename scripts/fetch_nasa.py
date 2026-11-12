@@ -80,9 +80,12 @@ def unique_events(events: list[dict[str, Any]], collected_at: str) -> list[dict[
 def supabase_headers(service_key: str, *, prefer: str | None = None) -> dict[str, str]:
     headers = {
         "apikey": service_key,
-        "Authorization": f"Bearer {service_key}",
         "Content-Type": "application/json",
     }
+    # Modern Supabase secret API keys are not JWTs and must be sent only via
+    # `apikey`. Legacy service_role keys are JWTs and still use Authorization.
+    if not service_key.startswith("sb_secret_"):
+        headers["Authorization"] = f"Bearer {service_key}"
     if prefer:
         headers["Prefer"] = prefer
     return headers
